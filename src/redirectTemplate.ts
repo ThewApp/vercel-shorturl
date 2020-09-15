@@ -8,9 +8,9 @@ export default function redirectTemplate(redirectsObject: Array<URLConfig>) {
       let output = "";
       output += `from: "${curr.from}",`;
       output += `to: "${curr.to}",`;
-      output += `regex: /${curr.regex}/`;
+      output += `regex: /${curr.regex}/,`;
       if (curr.status) output += `status: ${curr.status},`;
-      if (curr.query) output += `query: ${JSON.stringify(curr.query)}`;
+      if (curr.query) output += `query: ${JSON.stringify(curr.query)},`;
       return prev + `{${output}},`;
     }, "[") + "]";
 
@@ -18,7 +18,10 @@ export default function redirectTemplate(redirectsObject: Array<URLConfig>) {
   if (fs.existsSync("404.html")) {
     NotFoundPage = fs.readFileSync("404.html", "utf8");
   } else {
-    NotFoundPage = fs.readFileSync(join(__dirname, "../assets", "404.html"), "utf8");
+    NotFoundPage = fs.readFileSync(
+      join(__dirname, "../assets", "404.html"),
+      "utf8"
+    );
   }
   return `
 const urls = ${urlsString}
@@ -37,19 +40,16 @@ export default (request, response) => {
     if (pathMatch) {
       const variables = pathMatch.groups || {};
       const queryMatch = Object.keys(url.query || {}).every((key) => {
-        const requestValue = String(request.query[key]);
+        const requestValue = String(request.query[key] || "");
         if (!url.query[key].startsWith(":")) {
           return url.query[key] === requestValue;
         } else {
-          if (url.query[key].endsWith("?")) {
-            variables[key] = requestValue || "";
+          if (url.query[key].endsWith("?") || requestValue) {
+            variables[url.query[key].replace("?", "")] = requestValue;
+            return true;
           } else {
-            if (!requestValue) {
-              return false;
-            }
-            variables[key] = requestValue;
+            return false;
           }
-          return true;
         }
       });
       if (queryMatch) {
@@ -61,7 +61,7 @@ export default (request, response) => {
       }
     }
   }
-  return response.status(404).send(NotfoundPage);
+  return response.status(404).send(NotFoundPage);
 };
 `;
 }
