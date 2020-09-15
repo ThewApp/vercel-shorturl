@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "rewrites": [
+    {
+      "source": "/404",
+      "destination": "/404.html"
+    },
+    {
+      "source": "/:path*",
+      "destination": "/api/redirect"
+    }
+  ]
+}

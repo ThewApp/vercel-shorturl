@@ -1,0 +1,6 @@
+- from: /me
+  to: https://github.com/ThewBear
+- from: /google/:q
+  to: https://google.com/search?q=:q
+- from: /:slug*
+  to: https://vercel.com/:slug*
