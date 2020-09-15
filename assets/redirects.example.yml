@@ -10,3 +10,12 @@
   to: https://github.com/:slug
 - from: /dev/:slug1/:slug2 # Multiple match ex. /dev/p/information
   to: https://dev.to/:slug1/:slug2
+- from: /google
+  to: https://google.com/search?q=:q
+  query:
+    action: search # Must have this exact query
+    q: :q # And this match in query ex. /google?action=search&q=recursion
+- from: /dev
+  to: https://dev.to/:user
+  query:
+    u: :user? # Optional match ex. /dev /dev?u=thewbear
