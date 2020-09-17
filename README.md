@@ -1,8 +1,16 @@
 # vercel-shorturl
 
-Create your own shorturl on Vercel
+Create your own shorturl on Vercel.
+
+## Demo
+
+[Demo](https://vercel-shorturl-starter.vercel.app) is deployed with the example [redirects.yml](assets/redirects.example.yml).
 
 ## Usage
+
+Option 1. Use [the template](https://github.com/ThewApp/vercel-shorturl-starter) which automatically deploy to Vercel through GitHub Actions
+
+Option 2. Install locally
 
 1. Install  
    `npm install @thewapp/vercel-shorturl`
@@ -17,3 +25,7 @@ Create your own shorturl on Vercel
 See the example [redirects.yml](assets/redirects.example.yml) for available features.
 
 Note: You need to run `npx vercel-shorturl build` before deploying.
+
+## Custom page
+
+You can override home page and 404 page by placing `index.html` and `404.html` in project root.
