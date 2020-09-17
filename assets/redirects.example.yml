@@ -1,12 +1,13 @@
 - from: /me
   to: https://github.com/ThewBear
+  status: 308 # Change status code ex. 301, 302, 307 (Default), 308
 - from: /google/:q # Match exactly one ex. /google/recursion
   to: https://google.com/search?q=:q
 - from: /vercel/:slug* # Match zero or more ex. /vercel /vercel/docs /vercel/solutions/nextjs
   to: https://vercel.com/:slug
 - from: /twitter/:slug? # Match Zero or one ex. /twitter /twitter/thewdhanat
   to: https://twitter.com/:slug
-- from: /github/:slug+ # One or more ex. /github/ThewApp/vercel-shorturl /github/ThewApp/vercel-shorturl/issues
+- from: /github/:slug+ # One or more ex. /github/ThewApp github/ThewApp/vercel-shorturl
   to: https://github.com/:slug
 - from: /dev/:slug1/:slug2 # Multiple match ex. /dev/p/information
   to: https://dev.to/:slug1/:slug2

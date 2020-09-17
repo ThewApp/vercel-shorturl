@@ -5,7 +5,7 @@ import { join } from "path";
 import yaml from "js-yaml";
 import redirectTemplate from "./redirectTemplate";
 
-export interface URLConfig {
+export interface RedirectConfig {
   from: string;
   to: string;
   query?: {
@@ -15,7 +15,7 @@ export interface URLConfig {
   regex: string;
 }
 
-function compileFromURL(path: string) {
+export function parseRedirectFrom(path: string) {
   const paths = path.split("/").filter((path) => path);
   const regexString =
     paths.reduce((prev, curr) => {
@@ -50,15 +50,15 @@ function build() {
     fs.mkdirSync("api");
   }
 
-  const redirects: Array<URLConfig> = yaml.safeLoad(
+  const redirects: Array<RedirectConfig> = yaml.safeLoad(
     fs.readFileSync("redirects.yml", "utf8")
   );
 
-  const redirectsObject = redirects.map((url) => {
-    url.regex = compileFromURL(url.from);
-    return url;
+  const redirectsConfig = redirects.map((entry) => {
+    entry.regex = parseRedirectFrom(entry.from);
+    return entry;
   });
-  const redirectApi = redirectTemplate(redirectsObject);
+  const redirectApi = redirectTemplate(redirectsConfig);
   fs.writeFileSync("api/redirect.js", redirectApi);
 
   let IndexPage;
