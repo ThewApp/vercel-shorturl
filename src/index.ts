@@ -25,6 +25,7 @@ function sendGA(item_id: string, item_variant?: string): Promise<void> {
     return new Promise((resolve) => {
       const req = https.request(
         `https://www.google-analytics.com/mp/collect?measurement_id=${process.env.GA_measurement_id}&api_secret=${process.env.GA_api_secret}`,
+        {method: "POST"},
         (res) => {
           console.log(`statusCode: ${res.statusCode}`);
 
