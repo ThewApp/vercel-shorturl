@@ -1,6 +1,6 @@
 import { NowRequest, NowResponse } from "@vercel/node";
+import * as Amplitude from "@amplitude/node";
 import { RedirectConfig } from "./cli";
-import https from "https";
 
 interface RedirectApiURLConfig extends Omit<RedirectConfig, "regex"> {
   regex: RegExp;
@@ -11,39 +11,18 @@ interface RedirectApiConfig {
   NotFoundPage: string;
 }
 
-function sendGA(item_id: string, item_variant?: string): Promise<void> {
-  const data = JSON.stringify({
-    client_id: String(Math.random()),
-    events: [
-      {
-        name: "view_item",
-        params: { item_id, item_variant },
-      },
-    ],
-  });
-  if (process.env.GA_api_secret && process.env.GA_measurement_id) {
-    return new Promise((resolve) => {
-      const req = https.request(
-        `https://www.google-analytics.com/mp/collect?measurement_id=${process.env.GA_measurement_id}&api_secret=${process.env.GA_api_secret}`,
-        {method: "POST"},
-        (res) => {
-          console.log(`statusCode: ${res.statusCode}`);
+const amplitude = process.env.Amplitude
+  ? Amplitude.init(process.env.Amplitude)
+  : null;
 
-          res.on("data", (d) => {
-            process.stdout.write(d);
-          });
+function sendAmplitude(
+  req: NowRequest,
+  event: Amplitude.Event
+): Promise<Amplitude.Response | void> {
+  if (amplitude) {
+    amplitude.logEvent({ ip: req.connection.remoteAddress, ...event });
 
-          resolve();
-        }
-      );
-
-      req.on("error", (error) => {
-        console.error(error);
-      });
-
-      req.write(data);
-      req.end();
-    });
+    return amplitude.flush();
   }
   return Promise.resolve();
 }
@@ -89,14 +68,17 @@ export default class RedirectApi {
           for (const key in variables) {
             destination = destination.replace(`:${key}`, variables[key] || "");
           }
-          return sendGA(url.from, requestPath).then(() =>
-            res.redirect(url.status || 307, destination)
-          );
+          return sendAmplitude(req, {
+            event_type: "go",
+            event_properties: { source: requestPath, destination },
+          }).then(() => res.redirect(url.status || 307, destination));
         }
       }
     }
 
-    return sendGA("Not Found").then(() =>
+    return sendAmplitude(req, {
+      event_type: "Not Found",
+    }).then(() =>
       res.status(404).send(this.config.NotFoundPage)
     );
   }

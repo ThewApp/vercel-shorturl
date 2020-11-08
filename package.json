@@ -11,6 +11,7 @@
   "author": "ThewBear",
   "license": "MIT",
   "dependencies": {
+    "@amplitude/node": "^1.0.5",
     "js-yaml": "^3.14.0"
   },
   "devDependencies": {
