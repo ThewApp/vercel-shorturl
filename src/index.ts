@@ -10,6 +10,30 @@ interface RedirectApiConfig {
   NotFoundPage: string;
 }
 
+function sendGA(
+  item_id: string,
+  item_variant?: string
+): Promise<Response | void> {
+  if (process.env.GA_api_secret && process.env.GA_measurement_id) {
+    return fetch(
+      `https://www.google-analytics.com/mp/collect?measurement_id=${process.env.GA_measurement_id}&api_secret=${process.env.GA_api_secret}`,
+      {
+        method: "POST",
+        body: JSON.stringify({
+          client_id: String(Math.random()),
+          events: [
+            {
+              name: "view_item",
+              params: { item_id, item_variant },
+            },
+          ],
+        }),
+      }
+    );
+  }
+  return Promise.resolve();
+}
+
 export default class RedirectApi {
   constructor(readonly config: RedirectApiConfig) {}
 
@@ -51,10 +75,15 @@ export default class RedirectApi {
           for (const key in variables) {
             destination = destination.replace(`:${key}`, variables[key] || "");
           }
-          return res.redirect(url.status || 307, destination);
+          return sendGA(url.from, requestPath).then(() =>
+            res.redirect(url.status || 307, destination)
+          );
         }
       }
     }
-    return res.status(404).send(this.config.NotFoundPage);
+
+    return sendGA("Not Found").then(() =>
+      res.status(404).send(this.config.NotFoundPage)
+    );
   }
 }
