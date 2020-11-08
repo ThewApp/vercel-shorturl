@@ -20,7 +20,11 @@ function sendAmplitude(
   event: Amplitude.Event
 ): Promise<Amplitude.Response | void> {
   if (amplitude) {
-    amplitude.logEvent({ ip: req.connection.remoteAddress, ...event });
+    amplitude.logEvent({
+      ip: req.connection.remoteAddress,
+      user_id: String(Math.random() * 100000),
+      ...event,
+    });
 
     return amplitude.flush();
   }
@@ -78,8 +82,6 @@ export default class RedirectApi {
 
     return sendAmplitude(req, {
       event_type: "Not Found",
-    }).then(() =>
-      res.status(404).send(this.config.NotFoundPage)
-    );
+    }).then(() => res.status(404).send(this.config.NotFoundPage));
   }
 }
