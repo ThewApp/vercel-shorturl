@@ -1,5 +1,6 @@
 import { NowRequest, NowResponse } from "@vercel/node";
 import { RedirectConfig } from "./cli";
+import https from "https";
 
 interface RedirectApiURLConfig extends Omit<RedirectConfig, "regex"> {
   regex: RegExp;
@@ -10,26 +11,38 @@ interface RedirectApiConfig {
   NotFoundPage: string;
 }
 
-function sendGA(
-  item_id: string,
-  item_variant?: string
-): Promise<Response | void> {
-  if (process.env.GA_api_secret && process.env.GA_measurement_id) {
-    return fetch(
-      `https://www.google-analytics.com/mp/collect?measurement_id=${process.env.GA_measurement_id}&api_secret=${process.env.GA_api_secret}`,
+function sendGA(item_id: string, item_variant?: string): Promise<void> {
+  const data = JSON.stringify({
+    client_id: String(Math.random()),
+    events: [
       {
-        method: "POST",
-        body: JSON.stringify({
-          client_id: String(Math.random()),
-          events: [
-            {
-              name: "view_item",
-              params: { item_id, item_variant },
-            },
-          ],
-        }),
-      }
-    );
+        name: "view_item",
+        params: { item_id, item_variant },
+      },
+    ],
+  });
+  if (process.env.GA_api_secret && process.env.GA_measurement_id) {
+    return new Promise((resolve) => {
+      const req = https.request(
+        `https://www.google-analytics.com/mp/collect?measurement_id=${process.env.GA_measurement_id}&api_secret=${process.env.GA_api_secret}`,
+        (res) => {
+          console.log(`statusCode: ${res.statusCode}`);
+
+          res.on("data", (d) => {
+            process.stdout.write(d);
+          });
+
+          resolve();
+        }
+      );
+
+      req.on("error", (error) => {
+        console.error(error);
+      });
+
+      req.write(data);
+      req.end();
+    });
   }
   return Promise.resolve();
 }
