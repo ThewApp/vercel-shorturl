@@ -38,26 +38,26 @@ function expectNotFound(clear = true) {
   if (clear) clearMock();
 }
 
-test("Setup RedirectApi", () => {
+test("Setup RedirectApi", async () => {
   const redirectApi = setupApi();
 
   expect(redirectApi).toBeDefined();
   expect(redirectApi.handler).toBeDefined();
 });
 
-test("no path", () => {
+test("no path", async () => {
   const redirectApi = setupApi();
 
   const mockedReq = {
     query: {},
   };
 
-  redirectApi.handler(mockedReq as any, mockedRes as any);
+  await redirectApi.handler(mockedReq as any, mockedRes as any);
 
   expectNotFound();
 });
 
-test("example /me", () => {
+test("example /me", async () => {
   const redirectApi = setupApi();
 
   const mockedReq = {
@@ -65,19 +65,19 @@ test("example /me", () => {
       path: "me",
     },
   };
-  redirectApi.handler(mockedReq as any, mockedRes as any);
+  await redirectApi.handler(mockedReq as any, mockedRes as any);
   expectRedirect(308, "https://github.com/ThewBear");
 
   mockedReq.query.path = "me/";
-  redirectApi.handler(mockedReq as any, mockedRes as any);
+  await redirectApi.handler(mockedReq as any, mockedRes as any);
   expectRedirect(308, "https://github.com/ThewBear");
 
   mockedReq.query.path = "me/me";
-  redirectApi.handler(mockedReq as any, mockedRes as any);
+  await redirectApi.handler(mockedReq as any, mockedRes as any);
   expectNotFound();
 });
 
-test("example /google/:q", () => {
+test("example /google/:q", async () => {
   const redirectApi = setupApi();
 
   const mockedReq = {
@@ -85,19 +85,19 @@ test("example /google/:q", () => {
       path: "google/recursion",
     },
   };
-  redirectApi.handler(mockedReq as any, mockedRes as any);
+  await redirectApi.handler(mockedReq as any, mockedRes as any);
   expectRedirect(307, "https://google.com/search?q=recursion");
 
   mockedReq.query.path = "google";
-  redirectApi.handler(mockedReq as any, mockedRes as any);
+  await redirectApi.handler(mockedReq as any, mockedRes as any);
   expectNotFound();
 
   mockedReq.query.path = "google/recursion/recursion";
-  redirectApi.handler(mockedReq as any, mockedRes as any);
+  await redirectApi.handler(mockedReq as any, mockedRes as any);
   expectNotFound();
 });
 
-test("example /vercel/:slug*", () => {
+test("example /vercel/:slug*", async () => {
   const redirectApi = setupApi();
 
   const mockedReq = {
@@ -105,19 +105,19 @@ test("example /vercel/:slug*", () => {
       path: "vercel",
     },
   };
-  redirectApi.handler(mockedReq as any, mockedRes as any);
+  await redirectApi.handler(mockedReq as any, mockedRes as any);
   expectRedirect(307, "https://vercel.com/");
 
   mockedReq.query.path = "vercel/docs";
-  redirectApi.handler(mockedReq as any, mockedRes as any);
+  await redirectApi.handler(mockedReq as any, mockedRes as any);
   expectRedirect(307, "https://vercel.com/docs");
 
   mockedReq.query.path = "vercel/solutions/nextjs";
-  redirectApi.handler(mockedReq as any, mockedRes as any);
+  await redirectApi.handler(mockedReq as any, mockedRes as any);
   expectRedirect(307, "https://vercel.com/solutions/nextjs");
 });
 
-test("example /twitter/:slug?", () => {
+test("example /twitter/:slug?", async () => {
   const redirectApi = setupApi();
 
   const mockedReq = {
@@ -125,19 +125,19 @@ test("example /twitter/:slug?", () => {
       path: "twitter",
     },
   };
-  redirectApi.handler(mockedReq as any, mockedRes as any);
+  await redirectApi.handler(mockedReq as any, mockedRes as any);
   expectRedirect(307, "https://twitter.com/");
 
   mockedReq.query.path = "twitter/thewdhanat";
-  redirectApi.handler(mockedReq as any, mockedRes as any);
+  await redirectApi.handler(mockedReq as any, mockedRes as any);
   expectRedirect(307, "https://twitter.com/thewdhanat");
 
   mockedReq.query.path = "twitter/thewdhanat/likes";
-  redirectApi.handler(mockedReq as any, mockedRes as any);
+  await redirectApi.handler(mockedReq as any, mockedRes as any);
   expectNotFound();
 });
 
-test("example /github/:slug+", () => {
+test("example /github/:slug+", async () => {
   const redirectApi = setupApi();
 
   const mockedReq = {
@@ -145,19 +145,19 @@ test("example /github/:slug+", () => {
       path: "github",
     },
   };
-  redirectApi.handler(mockedReq as any, mockedRes as any);
+  await redirectApi.handler(mockedReq as any, mockedRes as any);
   expectNotFound();
 
   mockedReq.query.path = "github/ThewApp";
-  redirectApi.handler(mockedReq as any, mockedRes as any);
+  await redirectApi.handler(mockedReq as any, mockedRes as any);
   expectRedirect(307, "https://github.com/ThewApp");
 
   mockedReq.query.path = "github/ThewApp/vercel-shorturl";
-  redirectApi.handler(mockedReq as any, mockedRes as any);
+  await redirectApi.handler(mockedReq as any, mockedRes as any);
   expectRedirect(307, "https://github.com/ThewApp/vercel-shorturl");
 });
 
-test("example /dev/:slug1/:slug2", () => {
+test("example /dev/:slug1/:slug2", async () => {
   const redirectApi = setupApi();
 
   const mockedReq = {
@@ -165,19 +165,19 @@ test("example /dev/:slug1/:slug2", () => {
       path: "dev/settings",
     },
   };
-  redirectApi.handler(mockedReq as any, mockedRes as any);
+  await redirectApi.handler(mockedReq as any, mockedRes as any);
   expectNotFound();
 
   mockedReq.query.path = "dev/p/information";
-  redirectApi.handler(mockedReq as any, mockedRes as any);
+  await redirectApi.handler(mockedReq as any, mockedRes as any);
   expectRedirect(307, "https://dev.to/p/information");
 
   mockedReq.query.path = "dev/p/information/1";
-  redirectApi.handler(mockedReq as any, mockedRes as any);
+  await redirectApi.handler(mockedReq as any, mockedRes as any);
   expectNotFound();
 });
 
-test("example /google with query", () => {
+test("example /google with query", async () => {
   const redirectApi = setupApi();
 
   const mockedReq = {
@@ -187,7 +187,7 @@ test("example /google with query", () => {
       q: "recursion",
     },
   };
-  redirectApi.handler(mockedReq as any, mockedRes as any);
+  await redirectApi.handler(mockedReq as any, mockedRes as any);
   expectRedirect(307, "https://google.com/search?q=recursion");
 
   mockedReq.query = {
@@ -195,7 +195,7 @@ test("example /google with query", () => {
     action: "find",
     q: "recursion",
   };
-  redirectApi.handler(mockedReq as any, mockedRes as any);
+  await redirectApi.handler(mockedReq as any, mockedRes as any);
   expectNotFound();
 
   mockedReq.query = {
@@ -203,7 +203,7 @@ test("example /google with query", () => {
     action: "search",
     q: "",
   };
-  redirectApi.handler(mockedReq as any, mockedRes as any);
+  await redirectApi.handler(mockedReq as any, mockedRes as any);
   expectNotFound();
 
   mockedReq.query = {
@@ -211,11 +211,11 @@ test("example /google with query", () => {
     action: "",
     q: "",
   };
-  redirectApi.handler(mockedReq as any, mockedRes as any);
+  await redirectApi.handler(mockedReq as any, mockedRes as any);
   expectNotFound();
 });
 
-test("example /dev with optional query", () => {
+test("example /dev with optional query", async () => {
   const redirectApi = setupApi();
 
   const mockedReq = {
@@ -224,13 +224,13 @@ test("example /dev with optional query", () => {
       u: undefined,
     },
   };
-  redirectApi.handler(mockedReq as any, mockedRes as any);
+  await redirectApi.handler(mockedReq as any, mockedRes as any);
   expectRedirect(307, "https://dev.to/");
 
   mockedReq.query = {
     path: "dev",
     u: "thewbear",
   };
-  redirectApi.handler(mockedReq as any, mockedRes as any);
+  await redirectApi.handler(mockedReq as any, mockedRes as any);
   expectRedirect(307, "https://dev.to/thewbear");
 });
