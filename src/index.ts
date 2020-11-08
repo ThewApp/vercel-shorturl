@@ -21,8 +21,8 @@ function sendAmplitude(
 ): Promise<Amplitude.Response | void> {
   if (amplitude) {
     amplitude.logEvent({
-      ip: req.connection.remoteAddress,
-      user_id: String(Math.random() * 100000),
+      ip: String(req.headers["x-real-ip"]),
+      user_id: String(req.headers["x-vercel-id"]),
       ...event,
     });
 
