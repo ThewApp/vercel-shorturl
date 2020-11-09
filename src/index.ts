@@ -82,6 +82,7 @@ export default class RedirectApi {
 
     return sendAmplitude(req, {
       event_type: "Not Found",
+      event_properties: { source: requestPath },
     }).then(() => res.status(404).send(this.config.NotFoundPage));
   }
 }
