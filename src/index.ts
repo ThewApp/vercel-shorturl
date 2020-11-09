@@ -20,9 +20,17 @@ function sendAmplitude(
   event: Amplitude.Event
 ): Promise<Amplitude.Response | void> {
   if (amplitude) {
+    const requestId = String(req.headers["x-vercel-id"]);
     amplitude.logEvent({
       ip: String(req.headers["x-real-ip"]),
-      user_id: String(req.headers["x-vercel-id"]),
+      user_id: requestId,
+      user_properties: {
+        regions: requestId.substring(0, requestId.lastIndexOf("::")),
+        podId: requestId.substring(
+          requestId.lastIndexOf("::") + 2,
+          requestId.indexOf("-")
+        ),
+      },
       ...event,
     });
 
