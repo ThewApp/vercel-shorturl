@@ -26,6 +26,12 @@ See the example [redirects.yml](assets/redirects.example.yml) for available feat
 
 Note: You need to run `npx vercel-shorturl build` before deploying.
 
-## Custom page
+## Features
+
+### Custom page
 
 You can override home page and 404 page by placing `index.html` and `404.html` in project root.
+
+### Analytics
+
+vercel-shorturl can automatically send an event to [Amplitude](https://amplitude.com/), just set `Amplitude` [environment variable](https://vercel.com/docs/environment-variables) to your [HTTP API]() key.
