@@ -41,9 +41,9 @@ export const NotFoundPage = ${JSON.stringify(NotFoundPage)};
 export function apiTemplate() {
   return `
 import RedirectApi from "@thewapp/vercel-shorturl";
-import { urls, NotFoundPage } from "../data.js";
+import * as data from "../data.js";
 
-const redirectApi = new RedirectApi({ urls, NotFoundPage });
+const redirectApi = new RedirectApi(data);
 
 export default redirectApi.handler.bind(redirectApi);
 `
