@@ -3,7 +3,7 @@
 import fs from "fs";
 import { join } from "path";
 import yaml from "js-yaml";
-import redirectTemplate from "./redirectTemplate";
+import { dataTemplate, apiTemplate } from "./redirectTemplate";
 
 export interface RedirectConfig {
   from: string;
@@ -46,9 +46,6 @@ function build() {
   if (!fs.existsSync("public")) {
     fs.mkdirSync("public");
   }
-  if (!fs.existsSync("api")) {
-    fs.mkdirSync("api");
-  }
 
   const redirects: Array<RedirectConfig> = yaml.safeLoad(
     fs.readFileSync("redirects.yml", "utf8")
@@ -58,8 +55,8 @@ function build() {
     entry.regex = parseRedirectFrom(entry.from);
     return entry;
   });
-  const redirectApi = redirectTemplate(redirectsConfig);
-  fs.writeFileSync("api/redirect.js", redirectApi);
+  const data = dataTemplate(redirectsConfig);
+  fs.writeFileSync("data.js", data);
 
   let IndexPage;
   if (fs.existsSync("index.html")) {
@@ -91,6 +88,14 @@ function init() {
       join(__dirname, "../assets", "redirects.example.yml"),
       "redirects.yml"
     );
+  }
+  if (!fs.existsSync("api")) {
+    fs.mkdirSync("api");
+  }
+  if (!fs.existsSync("api/redirect.js")) {
+    console.log("Generating api redirects.js");
+    const redirectApi = apiTemplate();
+    fs.writeFileSync("api/redirect.js", redirectApi);
   }
 }
 

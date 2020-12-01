@@ -24,7 +24,7 @@ export function getNotFoundPage() {
   }
 }
 
-export default function redirectTemplate(
+export function dataTemplate(
   redirectsConfig: Array<RedirectConfig>
 ) {
   const urlsString = parseRedirectsConfig(redirectsConfig);
@@ -32,14 +32,19 @@ export default function redirectTemplate(
   const NotFoundPage = getNotFoundPage();
 
   return `
+export const urls = ${urlsString}
+
+export const NotFoundPage = ${JSON.stringify(NotFoundPage)};
+`;
+}
+
+export function apiTemplate() {
+  return `
 import RedirectApi from "@thewapp/vercel-shorturl";
-
-const urls = ${urlsString}
-
-const NotFoundPage = ${JSON.stringify(NotFoundPage)};
+import { urls, NotFoundPage } from "../data.js";
 
 const redirectApi = new RedirectApi({ urls, NotFoundPage });
 
 export default redirectApi.handler.bind(redirectApi);
-`;
+`
 }
