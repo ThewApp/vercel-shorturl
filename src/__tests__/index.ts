@@ -3,7 +3,7 @@ import fs from "fs";
 import RedirectApi from "../";
 import { parseRedirectFrom } from "../cli";
 
-const redirects = yaml.safeLoad(
+const redirects = yaml.load(
   fs.readFileSync("assets/redirects.example.yml", "utf8")
 );
 
