@@ -47,7 +47,7 @@ function build() {
     fs.mkdirSync("public");
   }
 
-  const redirects: Array<RedirectConfig> = yaml.safeLoad(
+  const redirects: Array<RedirectConfig> = yaml.load(
     fs.readFileSync("redirects.yml", "utf8")
   );
 
