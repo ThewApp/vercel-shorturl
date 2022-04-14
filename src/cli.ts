@@ -15,7 +15,7 @@ export interface RedirectConfig {
   regex: string;
 }
 
-export function parseRedirectFrom(path: string) {
+export function parseRedirectFrom(path: string): string {
   const paths = path.split("/").filter((path) => path);
   const regexString =
     paths.reduce((prev, curr) => {
@@ -47,9 +47,9 @@ function build() {
     fs.mkdirSync("public");
   }
 
-  const redirects: Array<RedirectConfig> = yaml.load(
+  const redirects = yaml.load(
     fs.readFileSync("redirects.yml", "utf8")
-  );
+  ) as Array<RedirectConfig>;
 
   const redirectsConfig = redirects.map((entry) => {
     entry.regex = parseRedirectFrom(entry.from);

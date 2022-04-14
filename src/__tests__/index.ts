@@ -1,11 +1,11 @@
 import yaml from "js-yaml";
 import fs from "fs";
-import RedirectApi from "../";
+import RedirectApi, {RedirectApiURLConfig} from "../";
 import { parseRedirectFrom } from "../cli";
 
 const redirects = yaml.load(
   fs.readFileSync("assets/redirects.example.yml", "utf8")
-);
+) as Array<RedirectApiURLConfig>;
 
 const NotFoundPage = "<html></html>";
 
@@ -16,7 +16,7 @@ const mockedRes = {
 };
 
 function setupApi() {
-  const urls = redirects.map((entry) => {
+  const urls: RedirectApiURLConfig[] = redirects.map((entry) => {
     entry.regex = new RegExp(parseRedirectFrom(entry.from));
     return entry;
   });
@@ -24,10 +24,10 @@ function setupApi() {
 }
 
 function clearMock() {
-  Object.keys(mockedRes).forEach((key) => mockedRes[key].mockClear());
+  Object.keys(mockedRes).forEach((key) => mockedRes[key as keyof typeof mockedRes].mockClear());
 }
 
-function expectRedirect(status, url, clear = true) {
+function expectRedirect(status: number, url: string, clear = true) {
   expect(mockedRes.redirect).toHaveBeenCalledWith(status, url);
   if (clear) clearMock();
 }
@@ -218,7 +218,14 @@ test("example /google with query", async () => {
 test("example /dev with optional query", async () => {
   const redirectApi = setupApi();
 
-  const mockedReq = {
+  type MockedRequest = {
+    query: {
+      path: "dev",
+      u?: string,
+    },
+  }
+
+  const mockedReq: MockedRequest = {
     query: {
       path: "dev",
       u: undefined,

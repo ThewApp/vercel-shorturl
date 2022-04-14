@@ -1,8 +1,8 @@
-import { NowRequest, NowResponse } from "@vercel/node";
+import type { VercelRequest, VercelResponse  } from "@vercel/node";
 import * as Amplitude from "@amplitude/node";
 import { RedirectConfig } from "./cli";
 
-interface RedirectApiURLConfig extends Omit<RedirectConfig, "regex"> {
+export interface RedirectApiURLConfig extends Omit<RedirectConfig, "regex"> {
   regex: RegExp;
 }
 
@@ -16,7 +16,7 @@ const amplitude = process.env.Amplitude
   : null;
 
 function sendAmplitude(
-  req: NowRequest,
+  req: VercelRequest,
   event: Amplitude.Event
 ): Promise<Amplitude.Response | void> {
   if (amplitude) {
@@ -42,7 +42,7 @@ function sendAmplitude(
 export default class RedirectApi {
   constructor(readonly config: RedirectApiConfig) {}
 
-  handler(req: NowRequest, res: NowResponse) {
+  handler(req: VercelRequest, res: VercelResponse ) {
     if (!req.query.path) {
       return res.status(404).send(this.config.NotFoundPage);
     }
@@ -57,9 +57,9 @@ export default class RedirectApi {
         // Must have query as specified in config
         const queryMatch = Object.keys(url.query || {}).every((key) => {
           const requestValue = String(req.query[key] || "");
-          if (!url.query[key].startsWith(":")) {
+          if (!url.query?.[key].startsWith(":")) {
             // Exact string match
-            return url.query[key] === requestValue;
+            return url.query?.[key] === requestValue;
           } else {
             // Variable query
             if (url.query[key].endsWith("?") || requestValue) {
