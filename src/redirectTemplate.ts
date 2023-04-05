@@ -39,9 +39,11 @@ export const NotFoundPage = ${JSON.stringify(NotFoundPage)};
 }
 
 export function apiTemplate() {
+  const code = fs.readFileSync("index.js", "utf8");
   return `
-import RedirectApi from "@thewapp/vercel-shorturl";
 import * as data from "./data.js";
+
+${code}
 
 const redirectApi = new RedirectApi(data);
 
