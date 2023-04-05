@@ -9,5 +9,6 @@
     "outDir": "dist",
     "types": ["node", "jest"],
     "skipLibCheck": true
-  }
+  },
+  "exclude": ["src/**/__tests__/*"]
 }
