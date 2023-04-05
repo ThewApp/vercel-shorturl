@@ -1,6 +1,6 @@
 {
   "name": "@thewapp/vercel-shorturl",
-  "version": "0.2.0-7",
+  "version": "0.2.0-8",
   "bin": "dist/cli.js",
   "main": "dist/index.js",
   "type": "module",
