@@ -1,9 +1,13 @@
 #!/usr/bin/env node
 
 import fs from "fs";
-import { join } from "path";
+import { join, dirname } from "path";
+import { fileURLToPath } from 'url';
 import yaml from "js-yaml";
 import { dataTemplate, apiTemplate } from "./redirectTemplate.js";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 export interface RedirectConfig {
   from: string;
@@ -94,6 +98,19 @@ function init() {
     console.log("Generating middleware.js");
     const redirectApi = apiTemplate();
     fs.writeFileSync("middleware.js", redirectApi);
+  }
+
+  if (!fs.existsSync("lib")) {
+    console.log("Creating lib directory");
+    fs.mkdirSync("lib");
+  }
+
+  if (!fs.existsSync("lib/index.js")) {
+    console.log("Copying lib/index.js");
+    fs.copyFileSync(
+      join(__dirname, "index.js"),
+      "lib/index.js"
+    );
   }
 }
 

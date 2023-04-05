@@ -43,11 +43,9 @@ export const NotFoundPage = ${JSON.stringify(NotFoundPage)};
 }
 
 export function apiTemplate() {
-  const code = fs.readFileSync(join(__dirname, "index.js"), "utf8");
   return `
+import RedirectApi from "./lib/index.js";
 import * as data from "./data.js";
-
-${code}
 
 const redirectApi = new RedirectApi(data);
 
