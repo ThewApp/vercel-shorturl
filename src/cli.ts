@@ -89,13 +89,11 @@ function init() {
       "redirects.yml"
     );
   }
-  if (!fs.existsSync("api")) {
-    fs.mkdirSync("api");
-  }
-  if (!fs.existsSync("api/redirect.js")) {
-    console.log("Generating api redirects.js");
+
+  if (!fs.existsSync("middleware.js")) {
+    console.log("Generating middleware.js");
     const redirectApi = apiTemplate();
-    fs.writeFileSync("api/redirect.js", redirectApi);
+    fs.writeFileSync("middleware.js", redirectApi);
   }
 }
 
