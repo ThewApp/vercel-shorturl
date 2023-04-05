@@ -56,7 +56,7 @@ function sendAmplitude(request: Request, event: AmplitudeEvent): Promise<void> {
 export default class RedirectApi {
   constructor(readonly config: RedirectApiConfig) {}
 
-  handler(request: Request) {
+  handler(request: Request): Promise<Response | void> {
     const requestUrl = new URL(request.url);
 
     // Remove trailing "/"
