@@ -3,7 +3,7 @@
 import fs from "fs";
 import { join } from "path";
 import yaml from "js-yaml";
-import { dataTemplate, apiTemplate } from "./redirectTemplate";
+import { dataTemplate, apiTemplate } from "./redirectTemplate.js";
 
 export interface RedirectConfig {
   from: string;

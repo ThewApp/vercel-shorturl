@@ -39,7 +39,7 @@ export const NotFoundPage = ${JSON.stringify(NotFoundPage)};
 }
 
 export function apiTemplate() {
-  const code = fs.readFileSync("index.js", "utf8");
+  const code = fs.readFileSync(join(__dirname, "index.js"), "utf8");
   return `
 import * as data from "./data.js";
 
