@@ -2,7 +2,7 @@
 
 import fs from "fs";
 import { join, dirname } from "path";
-import { fileURLToPath } from 'url';
+import { fileURLToPath } from "url";
 import yaml from "js-yaml";
 import { dataTemplate, apiTemplate } from "./redirectTemplate.js";
 
@@ -107,10 +107,7 @@ function init() {
 
   if (!fs.existsSync("lib/index.js")) {
     console.log("Copying lib/index.js");
-    fs.copyFileSync(
-      join(__dirname, "index.js"),
-      "lib/index.js"
-    );
+    fs.copyFileSync(join(__dirname, "index.js"), "lib/index.js");
   }
 }
 

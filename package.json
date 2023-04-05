@@ -7,7 +7,8 @@
   "scripts": {
     "start": "tsc --watch",
     "build": "tsc",
-    "test": "jest"
+    "test": "tsc && prettier --check \"**/*.{ts,js,json}\"",
+    "format": "prettier --write \"**/*.{ts,js,json}\""
   },
   "author": "ThewBear",
   "license": "MIT",
@@ -15,13 +16,9 @@
     "js-yaml": "^4.1.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.17.9",
-    "@babel/preset-env": "^7.16.11",
-    "@babel/preset-typescript": "^7.16.7",
-    "@types/jest": "^27.4.1",
     "@types/js-yaml": "^4.0.5",
     "@types/node": "^14.8.3",
-    "babel-jest": "^27.5.1",
-    "jest": "^27.5.1"
+    "prettier": "^2.8.7",
+    "typescript": "^5.0.3"
   }
 }

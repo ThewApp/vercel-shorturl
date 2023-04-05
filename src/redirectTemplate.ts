@@ -1,6 +1,6 @@
 import fs from "fs";
 import { join, dirname } from "path";
-import { fileURLToPath } from 'url';
+import { fileURLToPath } from "url";
 import { RedirectConfig } from "./cli";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -28,9 +28,7 @@ export function getNotFoundPage() {
   }
 }
 
-export function dataTemplate(
-  redirectsConfig: Array<RedirectConfig>
-) {
+export function dataTemplate(redirectsConfig: Array<RedirectConfig>) {
   const urlsString = parseRedirectsConfig(redirectsConfig);
 
   const NotFoundPage = getNotFoundPage();
@@ -50,5 +48,5 @@ import * as data from "./data.js";
 const redirectApi = new RedirectApi(data);
 
 export default redirectApi.handler.bind(redirectApi);
-`
+`;
 }

@@ -3,9 +3,24 @@ name: Test
 on: [push, pull_request]
 
 jobs:
-  jest:
+  test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - run: npm ci
       - run: npm run test
+
+  starter:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          path: 'vercel-shorturl'
+      - run: npm ci && npm run build && npm link
+        working-directory: 'vercel-shorturl'
+      - uses: actions/checkout@v3
+        with:
+          repository: '@ThewApp/vercel-shorturl-starter'
+          path: 'vercel-shorturl-starter'
+      - run: npx vercel-shorturl build
+        working-directory: 'vercel-shorturl-starter'
