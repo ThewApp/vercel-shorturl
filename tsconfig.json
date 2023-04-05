@@ -2,7 +2,7 @@
   "compilerOptions": {
     "strict": true,
     "esModuleInterop": true,
-    "lib": ["esnext"],
+    "lib": ["esnext", "WebWorker"],
     "module": "commonjs",
     "target": "es2018",
     "moduleResolution": "node",
