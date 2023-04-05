@@ -20,7 +20,7 @@ jobs:
         working-directory: 'vercel-shorturl'
       - uses: actions/checkout@v3
         with:
-          repository: '@ThewApp/vercel-shorturl-starter'
+          repository: 'ThewApp/vercel-shorturl-starter'
           path: 'vercel-shorturl-starter'
       - run: npx vercel-shorturl build
         working-directory: 'vercel-shorturl-starter'

@@ -7,8 +7,8 @@
   "scripts": {
     "start": "tsc --watch",
     "build": "tsc",
-    "test": "tsc && prettier --check \"**/*.{ts,js,json}\"",
-    "format": "prettier --write \"**/*.{ts,js,json}\""
+    "test": "tsc && prettier --check \"src/**/*.{ts,js,json}\"",
+    "format": "prettier --write \"src/**/*.{ts,js,json}\""
   },
   "author": "ThewBear",
   "license": "MIT",
