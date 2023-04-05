@@ -2,9 +2,9 @@
   "compilerOptions": {
     "strict": true,
     "esModuleInterop": true,
-    "lib": ["esnext", "WebWorker"],
-    "module": "commonjs",
-    "target": "es2018",
+    "lib": ["es2021", "WebWorker"],
+    "module": "es2020",
+    "target": "es2021",
     "moduleResolution": "node",
     "outDir": "dist",
     "types": ["node", "jest"],
