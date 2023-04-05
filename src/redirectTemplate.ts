@@ -1,6 +1,10 @@
-import { join } from "path";
 import fs from "fs";
+import { join, dirname } from "path";
+import { fileURLToPath } from 'url';
 import { RedirectConfig } from "./cli";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 export function parseRedirectsConfig(redirectsConfig: Array<RedirectConfig>) {
   return (
