@@ -77,14 +77,6 @@ function build() {
 }
 
 function init() {
-  if (!fs.existsSync("vercel.json")) {
-    console.log("Generating vercel.json");
-
-    fs.copyFileSync(
-      join(__dirname, "../assets", "vercel.example.json"),
-      "vercel.json"
-    );
-  }
   if (!fs.existsSync("redirects.yml")) {
     console.log("Generating example redirects.yml");
 
