@@ -21,7 +21,7 @@ function sendAmplitude(request: Request, event: AmplitudeEvent): Promise<void> {
   const host = String(request.headers.get("host"));
   const deploymentUrl = String(request.headers.get("x-vercel-deployment-url"));
 
-  return fetch("https://api2.amplitude.com/2/httpapi", {
+  fetch("https://api2.amplitude.com/2/httpapi", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -51,6 +51,8 @@ function sendAmplitude(request: Request, event: AmplitudeEvent): Promise<void> {
     .then((response) => response.json())
     .then((data) => console.log(data))
     .catch((error) => console.error(error));
+
+  return Promise.resolve()
 }
 
 export default class RedirectApi {
