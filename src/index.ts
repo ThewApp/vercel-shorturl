@@ -52,7 +52,7 @@ function sendAmplitude(request: Request, event: AmplitudeEvent): Promise<void> {
     .then((data) => console.log(data))
     .catch((error) => console.error(error));
 
-  return Promise.resolve()
+  return Promise.resolve();
 }
 
 export default class RedirectApi {
