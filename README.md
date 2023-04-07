@@ -1,6 +1,6 @@
 # vercel-shorturl
 
-Create your own shorturl on Vercel.
+Create your own shorturl on Vercel Edge Middleware.
 
 ## Demo
 
