@@ -36,7 +36,7 @@ function sendAmplitude(request: Request, event: AmplitudeEvent): Promise<void> {
             regions: requestId.substring(0, requestId.lastIndexOf("::")),
             podId: requestId.substring(
               requestId.lastIndexOf("::") + 2,
-              requestId.indexOf("-")
+              requestId.indexOf("-"),
             ),
             host: host,
             deploymentUrl: deploymentUrl,
@@ -118,7 +118,7 @@ export default class RedirectApi {
           headers: {
             "content-type": "text/html",
           },
-        })
+        }),
     );
   }
 }

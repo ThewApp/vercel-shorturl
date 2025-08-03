@@ -52,7 +52,7 @@ function build() {
   }
 
   const redirects = yaml.load(
-    fs.readFileSync("redirects.yml", "utf8")
+    fs.readFileSync("redirects.yml", "utf8"),
   ) as Array<RedirectConfig>;
 
   const redirectsConfig = redirects.map((entry) => {
@@ -68,7 +68,7 @@ function build() {
   } else {
     IndexPage = fs.readFileSync(
       join(__dirname, "../assets", "index.html"),
-      "utf8"
+      "utf8",
     );
   }
   fs.writeFileSync("public/index.html", IndexPage);
@@ -82,7 +82,7 @@ function init() {
 
     fs.copyFileSync(
       join(__dirname, "../assets", "redirects.example.yml"),
-      "redirects.yml"
+      "redirects.yml",
     );
   }
 
