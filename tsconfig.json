@@ -2,10 +2,9 @@
   "compilerOptions": {
     "strict": true,
     "esModuleInterop": true,
-    "lib": ["es2021", "WebWorker"],
-    "module": "es2020",
-    "target": "es2021",
-    "moduleResolution": "node",
+    "lib": ["es2023", "WebWorker"],
+    "module": "es2022",
+    "target": "es2023",
     "outDir": "dist",
     "types": ["node"],
     "skipLibCheck": true
